@@ -1,0 +1,63 @@
+<html>
+
+  <head> </head>
+
+  <body>
+    <h2>Vote by Email!</h2>
+    Email:
+    <input type="email" id="email" required />
+    <br />
+    Your Vote:
+    <select id="vote" required>
+      <option value="Option1">1st choice</option>
+      <option value="Option2">2nd choice</option>
+      <option value="Option3">3rd choice</option>
+    </select>
+    <br />
+    <button onclick="submitVote()">Vote!</button>
+
+    <h2>Results :</h2>
+    <p>1st choice: <span id="option1Count">0</span> votes</p>
+    <p>2nd choice: <span id="option2Count">0</span> votes</p>
+    <p>3rd choice: <span id="option3Count">0</span> votes</p>
+    <!-- Option 3 is for later -->
+
+    <script>
+      function submitVote() {
+        var email = document.getElementById("email").value;
+        var vote = document.getElementById("vote").value;
+
+        // Check if the email has voted
+        if (localStorage.getItem(email)) {
+          alert("This email has already voted.");
+        } else {
+          // Store the vote
+          localStorage.setItem(email, vote);
+          alert("Your vote has been submitted successfully.");
+          updateResults();
+        }
+      }
+
+      function updateResults() {
+        var counts = { Option1: 0, Option2: 0, Option3: 0 };
+
+        // Count the votes
+        for (var i = 0; i < localStorage.length; i++) {
+          var key = localStorage.key(i);
+          var vote = localStorage.getItem(key);
+          if (counts[vote] !== undefined) {
+            counts[vote]++;
+          }
+        }
+
+        // Update the display
+        document.getElementById("option1Count").innerText = counts["Option1"];
+        document.getElementById("option2Count").innerText = counts["Option2"];
+        document.getElementById("option3Count").innerText = counts["Option3"];
+      }
+
+      // Update the results when the page loads
+      updateResults();
+    </script>
+  </body>
+</html>
